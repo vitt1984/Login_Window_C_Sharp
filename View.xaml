@@ -1,0 +1,80 @@
+﻿<Window x:Class="Test2.View"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Test2"
+        Title="{Binding WindowTitle}"
+        Height="185" Width="340"
+        ResizeMode="NoResize">
+	
+	<!-- Window title is bound to the View Model (although it is useless as it is neither changed nor used) as requested -->
+	
+	<Window.DataContext>
+		<local:ViewModel/>
+	</Window.DataContext>
+	
+	<!-- Border for padding (still white) -->
+	
+	<Border Padding="5" BorderBrush="White">
+		
+		<!-- Grid definition. Background is bound for fading animation later -->
+		
+		<Grid Background="{Binding GridBackground}">
+			
+			<Grid.RowDefinitions>
+				<RowDefinition Height="37" />
+				<RowDefinition Height="27" />
+				<RowDefinition Height="27" />
+				<RowDefinition Height="47" />
+			</Grid.RowDefinitions>
+			
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="100" />
+				<ColumnDefinition Width="240" />
+			</Grid.ColumnDefinitions>
+		
+			<!-- Row 0: Autenthication message -->
+			
+			<Label HorizontalAlignment="Left"  Margin="20,0,0,0" FontSize="14" FontWeight="Bold"  Name="aAuthenticationMessage" VerticalAlignment="Bottom"
+			       Content="{Binding AuthenticationMessage, Mode=TwoWay, ValidatesOnExceptions=True,
+			       UpdateSourceTrigger=PropertyChanged}"
+			       Grid.Column="1" Grid.Row="0" ></Label>
+		
+			<!-- Row 1: Username Label + Textbox
+				 Note: Label has a 5 right margin from the TextBox -->
+			
+			<Label HorizontalAlignment="Right"  Margin="0,0,5,0" FontSize="14" VerticalAlignment="Center"
+			       Content="Username:"
+			       Grid.Column="0" Grid.Row="1" ></Label>
+			
+			<TextBox HorizontalAlignment="Left"  Margin="0,0,0,0" FontSize="14" Name="aUsernameBox" VerticalAlignment="Center" Width="200"
+			         TextAlignment="Right"
+			         Text="{Binding Username, Mode=TwoWay, ValidatesOnExceptions=True,
+			         UpdateSourceTrigger=PropertyChanged}"
+			         Grid.Column="1" Grid.Row="1" ></TextBox>
+		
+			<!-- Row 2: Password Label + PasswordBox 
+				 Note: Label has a 5 right margin from the PasswordBox 
+                 Note: the PasswordBox cannot be bound to the ViewModel, else it violates security by 
+                 storing the password in plain text in memory. Therefore it is passed as a parameter to 
+                 buttons below-->
+			
+			<Label HorizontalAlignment="Right"  Margin="0,0,5,0" FontSize="14" VerticalAlignment="Center"
+			       Content="Password:"
+			       Grid.Column="0" Grid.Row="2" ></Label>
+			
+			<PasswordBox HorizontalAlignment="Left" Margin="0,0,0,0" FontSize="14"  Name="aPasswordBox" VerticalAlignment="Center" Width="200"
+			             HorizontalContentAlignment="Right"
+			             Grid.Column="1" Grid.Row="2" ></PasswordBox>
+		
+			<!-- Row 3: Login and Reset Buttons -->
+			
+			<Button  HorizontalAlignment="Left"  Margin="10,0,0,0" FontSize="14" FontWeight="Bold"  Name="aLoginButton" VerticalAlignment="Center"
+			        Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=aPasswordBox}"
+			        Grid.Column="1" Grid.Row="3" >Login</Button>
+			
+			<Button  HorizontalAlignment="Left" Margin="60,0,0,0" FontSize="14"  Name="aResetButton" VerticalAlignment="Center"
+			        Command="{Binding ResetCommand}" CommandParameter="{Binding ElementName=aPasswordBox}"
+			        Grid.Column="1" Grid.Row="3" >Reset</Button>
+		</Grid>
+	</Border>
+</Window>
